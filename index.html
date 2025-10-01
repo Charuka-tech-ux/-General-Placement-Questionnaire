@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRES Placement Questionnaire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .form-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        h1, h2 {
+            color: #1f2937;
+        }
+        .form-group label {
+            font-weight: 600;
+        }
+        input[type="text"], input[type="email"], input[type="tel"] {
+            transition: all 0.2s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5);
+        }
+        .conditional-input {
+            margin-top: 0.5rem;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div id="pdf-content" class="form-container">
+    <header class="text-center mb-8">
+        <h1 class="text-3xl font-bold uppercase tracking-wider text-blue-700">INTERNATIONAL</h1>
+        <h2 class="text-xl font-semibold mb-6">Recruitment Exchange Services, Inc.</h2>
+        <h3 class="text-2xl font-bold border-b-2 pb-2 mb-8 text-gray-700">GENERAL PLACEMENT QUESTIONNAIRE</h3>
+    </header>
+
+    <form id="placementForm" class="space-y-6">
+        <!-- Personal Information -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 border-b pb-4 mb-4">
+            <div class="form-group">
+                <label for="name" class="block text-sm text-gray-700 mb-1">Name</label>
+                <input type="text" id="name" name="name" class="w-full p-2 border border-gray-300 rounded-lg" required>
+            </div>
+            <div class="form-group">
+                <label for="email" class="block text-sm text-gray-700 mb-1">Email Address</label>
+                <input type="email" id="email" name="email" class="w-full p-2 border border-gray-300 rounded-lg" required>
+            </div>
+            <div class="form-group">
+                <label for="phone" class="block text-sm text-gray-700 mb-1">Phone Number</label>
+                <input type="tel" id="phone" name="phone" class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+        </div>
+
+        <!-- How did you hear about IRES? -->
+        <div class="form-group">
+            <label class="block text-sm text-gray-700 mb-2">How did you hear about IRES?</label>
+            <div class="flex flex-wrap gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="hear_about" value="Referral" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">Referral</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="hear_about" value="School" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">School</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="hear_about" value="LinkedIn" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">LinkedIn</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="hear_about" value="IRES Website" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">IRES Website</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="hear_about" value="Facebook/Instagram" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">Facebook/Instagram</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="hear_about" value="HOSCO" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">HOSCO</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="hear_about" value="Other" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">Other</span>
+                </label>
+            </div>
+            <div id="other_source_input" class="conditional-input hidden">
+                <input type="text" id="other_source" name="other_source" placeholder="Please specify the source" class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+        </div>
+
+        <!-- Were you referred? -->
+        <div class="form-group border-b pb-4 mb-4">
+            <label class="block text-sm text-gray-700 mb-2">Were you referred by someone?</label>
+            <div class="flex items-center gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="referred" value="Yes" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">Yes</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="referred" value="No" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">No</span>
+                </label>
+            </div>
+            <div id="referred_no_reason_input" class="conditional-input hidden">
+                <input type="text" id="referred_no_reason" name="referred_no_reason" placeholder="If no, please leave a blank here" class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+        </div>
+
+        <h4 class="text-lg font-semibold text-gray-700 mt-6 mb-4">Program & Agency Details</h4>
+
+        <!-- Program Fee Acknowledgement -->
+        <div class="form-group">
+            <label class="block text-sm text-gray-700 mb-2">Program Fee Acknowledgement. I confirm I have reviewed and understand the program fees, including the payment schedule and due dates:</label>
+            <div class="flex flex-wrap gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="fee_acknowledgement" value="Yes" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">Yes</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="fee_acknowledgement" value="No" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">No</span>
+                </label>
+            </div>
+            <div id="fee_no_reason_input" class="conditional-input hidden">
+                <input type="text" id="fee_no_reason" name="fee_no_reason" placeholder="If no, please explain why you haven't reviewed/understood" class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+        </div>
+
+        <!-- Working with another agency? -->
+        <div class="form-group border-b pb-4 mb-4">
+            <label class="block text-sm text-gray-700 mb-2">Are you working with any other Agency?</label>
+            <div class="flex flex-wrap gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="other_agency" value="Yes" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">Yes</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="other_agency" value="No" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">No</span>
+                </label>
+            </div>
+            <div id="agency_no_reason_input" class="conditional-input hidden">
+                <label for="agency_no_reason" class="block text-xs text-gray-500 mb-1">If no, please leave a blank here.</label>
+                <input type="text" id="agency_no_reason" name="agency_no_reason" class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+        </div>
+
+        <h4 class="text-lg font-semibold text-gray-700 mt-6 mb-4">PLACEMENT PREFERENCES</h4>
+
+        <!-- Desired Position -->
+        <div class="form-group">
+            <label class="block text-sm text-gray-700 mb-2">Desired Position: What specific type of position are you hoping to receive training in?</label>
+            <p class="text-xs text-gray-500 mb-2">(e.g., Food & Beverage, Culinary, Front Office, Housekeeping Supervisor, Business Administration, etc.)</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" id="position_1" name="position_1" placeholder="1st Preference" class="w-full p-2 border border-gray-300 rounded-lg">
+                <input type="text" id="position_2" name="position_2" placeholder="2nd Preference" class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+        </div>
+
+        <!-- Desired Arrival Date -->
+        <div class="form-group">
+            <label for="arrival_date" class="block text-sm text-gray-700 mb-1">Desired Arrival Date: When would you like to arrive in the USA? (month/year)</label>
+            <input type="text" id="arrival_date" name="arrival_date" placeholder="Month/Year (e.g., January 2026)" class="w-full p-2 border border-gray-300 rounded-lg">
+        </div>
+
+        <!-- Program Length -->
+        <div class="form-group">
+            <label class="block text-sm text-gray-700 mb-2">Program Length:</label>
+            <div class="flex flex-wrap gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="program_length" value="6 months" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">6 months</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="program_length" value="9 months" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">9 months</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="program_length" value="12 months" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">12 months</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="program_length" value="18 months" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">18 months</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Location Preference -->
+        <div class="form-group">
+            <label class="block text-sm text-gray-700 mb-2">Location Preference:</label>
+            <div class="flex items-center gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="location_preference" value="100% open to ALL locations" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">100% open to ALL locations</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="location_preference" value="No" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">No</span>
+                </label>
+            </div>
+            <div id="preferred_locations_input" class="conditional-input hidden">
+                <input type="text" id="preferred_locations" name="preferred_locations" placeholder="If no, preferred location(s)" class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+        </div>
+
+        <!-- Custom Placement -->
+        <div class="form-group border-b pb-4 mb-4">
+            <label class="block text-sm text-gray-700 mb-2">Custom Placement with Another Candidate:</label>
+            <div class="flex items-center gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="custom_placement" value="Yes" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">Yes</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="custom_placement" value="No" class="form-radio text-blue-600 h-4 w-4">
+                    <span class="ml-2 text-gray-600">No</span>
+                </label>
+            </div>
+            <div id="custom_no_reason_input" class="conditional-input hidden">
+                <input type="text" id="custom_no_reason" name="custom_no_reason" placeholder="If no, please leave a blank here" class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+        </div>
+
+        <!-- Submission Button -->
+        <div class="mt-8 text-center">
+            <button type="button" onclick="generatePDF()" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                Download Completed Questionnaire as PDF
+            </button>
+        </div>
+
+        <footer class="text-center pt-6 text-sm text-gray-500 border-t mt-8">
+            International Recruitment Exchange Services, Inc. | Tel: +1 678 283-2814 | Email: kburris@ireservices.com
+        </footer>
+    </form>
+</div>
+
+<script>
+    const { jsPDF } = window.jspdf;
+
+    function setupConditionalInput(radioGroupName, conditionalValue, conditionalInputId) {
+        const radioButtons = document.querySelectorAll(`input[name="${radioGroupName}"]`);
+        const conditionalInput = document.getElementById(conditionalInputId);
+        
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.checked && radio.value === conditionalValue) {
+                    conditionalInput.classList.remove('hidden');
+                } else if (radio.checked && radio.value !== conditionalValue) {
+                    conditionalInput.classList.add('hidden');
+                }
+            });
+        });
+    }
+
+    function initializeFormListeners() {
+        setupConditionalInput('hear_about', 'Other', 'other_source_input');
+        setupConditionalInput('referred', 'No', 'referred_no_reason_input');
+        setupConditionalInput('fee_acknowledgement', 'No', 'fee_no_reason_input');
+        setupConditionalInput('other_agency', 'No', 'agency_no_reason_input');
+        setupConditionalInput('location_preference', 'No', 'preferred_locations_input');
+        setupConditionalInput('custom_placement', 'No', 'custom_no_reason_input');
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeFormListeners);
+
+    function collectFormData() {
+        const data = [];
+        const form = document.getElementById('placementForm');
+
+        const getRadioValue = (name) => {
+            const checked = form.querySelector(`input[name="${name}"]:checked`);
+            return checked ? checked.value : 'N/A';
+        };
+
+        data.push({ question: 'Name', answer: document.getElementById('name').value.trim() || 'Not provided' });
+        data.push({ question: 'Email Address', answer: document.getElementById('email').value.trim() || 'Not provided' });
+        data.push({ question: 'Phone Number', answer: document.getElementById('phone').value.trim() || 'Not provided' });
+
+        const hearAboutValue = getRadioValue('hear_about');
+        let finalHearAboutAnswer = hearAboutValue;
+        if (hearAboutValue === 'Other') {
+            const otherSource = document.getElementById('other_source')?.value.trim();
+            finalHearAboutAnswer = otherSource || 'Other (Not specified)';
+        }
+        data.push({ question: 'How did you hear about IRES?', answer: finalHearAboutAnswer });
+
+        data.push({ question: 'Were you referred by someone?', answer: getRadioValue('referred') });
+
+        const feeAckValue = getRadioValue('fee_acknowledgement');
+        let feeAckAnswer = feeAckValue;
+        if (feeAckValue === 'No') {
+            const reason = document.getElementById('fee_no_reason')?.value.trim();
+            feeAckAnswer = reason ? `No (Reason: ${reason})` : 'No';
+        }
+        data.push({ question: 'Program Fee Acknowledgement', answer: feeAckAnswer });
+
+        data.push({ question: 'Are you working with any other Agency?', answer: getRadioValue('other_agency') });
+        data.push({ question: 'Desired Position (1st Preference)', answer: document.getElementById('position_1').value.trim() || 'Not provided' });
+        data.push({ question: 'Desired Position (2nd Preference)', answer: document.getElementById('position_2').value.trim() || 'Not provided' });
+        data.push({ question: 'Desired Arrival Date', answer: document.getElementById('arrival_date').value.trim() || 'Not provided' });
+        data.push({ question: 'Program Length', answer: getRadioValue('program_length') });
+
+        const locationPrefValue = getRadioValue('location_preference');
+        let finalLocationPref = locationPrefValue;
+        if (locationPrefValue === 'No') {
+            const preferred = document.getElementById('preferred_locations')?.value.trim();
+            finalLocationPref = preferred ? `No (Prefers: ${preferred})` : 'No preference specified';
+        }
+        data.push({ question: 'Location Preference', answer: finalLocationPref });
+        data.push({ question: 'Custom Placement with Another Candidate', answer: getRadioValue('custom_placement') });
+
+        return data;
+    }
+
+    function generatePDF() {
+        const form = document.getElementById('placementForm');
+        
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        try {
+            const formData = collectFormData();
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const margin = 15;
+            const maxWidth = pageWidth - (2 * margin);
+            let yPosition = margin;
+
+            // Header
+            pdf.setFontSize(20);
+            pdf.setFont(undefined, 'bold');
+            pdf.setTextColor(37, 99, 235);
+            pdf.text('ManikShan Foreign Employment PVT LTD', pageWidth / 2, yPosition, { align: 'center' });
+            
+            yPosition += 8;
+            pdf.setFontSize(9);
+            pdf.setFont(undefined, 'normal');
+            pdf.setTextColor(107, 114, 128);
+            const dateTime = new Date().toLocaleDateString() + ' at ' + new Date().toLocaleTimeString();
+            pdf.text('Generated: ' + dateTime, pageWidth / 2, yPosition, { align: 'center' });
+            
+            // Line under header
+            yPosition += 5;
+            pdf.setDrawColor(37, 99, 235);
+            pdf.setLineWidth(1);
+            pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+            
+            yPosition += 10;
+
+            // Form Data
+            formData.forEach((item, index) => {
+                // Check if we need a new page
+                if (yPosition > pageHeight - 30) {
+                    pdf.addPage();
+                    yPosition = margin;
+                }
+
+                // Question
+                pdf.setFontSize(10);
+                pdf.setFont(undefined, 'bold');
+                pdf.setTextColor(107, 114, 128);
+                const questionLines = pdf.splitTextToSize(item.question, maxWidth);
+                pdf.text(questionLines, margin, yPosition);
+                yPosition += questionLines.length * 5;
+
+                // Answer
+                pdf.setFontSize(11);
+                pdf.setFont(undefined, 'bold');
+                pdf.setTextColor(31, 41, 55);
+                const answerLines = pdf.splitTextToSize(item.answer, maxWidth);
+                pdf.text(answerLines, margin, yPosition);
+                yPosition += answerLines.length * 6;
+
+                // Separator line
+                yPosition += 3;
+                pdf.setDrawColor(229, 231, 235);
+                pdf.setLineWidth(0.5);
+                pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+                yPosition += 8;
+            });
+
+            // Footer
+            if (yPosition > pageHeight - 25) {
+                pdf.addPage();
+                yPosition = margin;
+            }
+            yPosition = pageHeight - 15;
+            pdf.setFontSize(8);
+            pdf.setFont(undefined, 'normal');
+            pdf.setTextColor(156, 163, 175);
+            pdf.text('International Recruitment Exchange Services, Inc. | Tel: +1 678 283-2814 | Email: kburris@ireservices.com', pageWidth / 2, yPosition, { align: 'center' });
+
+            // Save PDF
+            const candidateName = document.getElementById('name').value.trim();
+            const fileName = candidateName 
+                ? `IRES_Placement_Summary_${candidateName.replace(/\s+/g, '_')}.pdf`
+                : 'IRES_Placement_Summary_Report.pdf';
+            
+            pdf.save(fileName);
+
+            // Success message
+            showMessage('PDF downloaded successfully!', 'success');
+
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+            showMessage('PDF Generation Failed. Please try again.', 'error');
+        }
+    }
+
+    function showMessage(message, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = "fixed top-4 right-4 p-4 rounded-lg shadow-xl z-50 transition-all";
+        messageDiv.style.backgroundColor = type === 'success' ? '#10b981' : '#ef4444';
+        messageDiv.style.color = 'white';
+        messageDiv.innerHTML = `
+            <div class="flex items-center gap-2">
+                <span class="font-semibold">${message}</span>
+                <button onclick="this.parentNode.parentNode.remove()" class="ml-4 text-white hover:text-gray-200">✕</button>
+            </div>
+        `;
+        document.body.appendChild(messageDiv);
+        
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
+    }
+</script>
+
+</body>
+</html>
